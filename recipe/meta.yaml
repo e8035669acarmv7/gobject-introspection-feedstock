@@ -24,7 +24,7 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - {{ posix }}bison
     - {{ posix }}flex
-    - meson                                  # [build_platform != target_platform]
+    - meson
     - ninja
     - {{ posix }}patch
     - {{ native }}pkg-config
@@ -36,7 +36,6 @@ requirements:
     - glib                                   # [build_platform != target_platform]
     - libffi                                 # [build_platform != target_platform]
   host:
-    - meson
     - cairo
     - gettext  # [osx]
     - glib
