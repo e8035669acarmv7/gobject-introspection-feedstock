@@ -29,12 +29,11 @@ requirements:
     - {{ posix }}patch
     - {{ native }}pkg-config
     - {{ compiler('c') }}
-    - glib                                   # [build_platform != target_platform]
-    - gobject-introspection {{ version }}    # [build_platform != target_platform]
-    - cairo                                  # [build_platform != target_platform]
-    - gettext                                # [(build_platform != target_platform) and osx]
-    - glib                                   # [build_platform != target_platform]
-    - libffi                                 # [build_platform != target_platform]
+    - glib     # [build_platform != target_platform]
+    - cairo    # [build_platform != target_platform]
+    - gettext  # [(build_platform != target_platform) and osx]
+    - glib     # [build_platform != target_platform]
+    - libffi   # [build_platform != target_platform]
   host:
     - cairo
     - gettext  # [osx]
