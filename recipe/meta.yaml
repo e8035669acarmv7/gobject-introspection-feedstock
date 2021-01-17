@@ -31,12 +31,9 @@ requirements:
     - {{ compiler('c') }}
     - glib     # [build_platform != target_platform]
     - cairo    # [build_platform != target_platform]
-    - gettext  # [(build_platform != target_platform) and osx]
-    - glib     # [build_platform != target_platform]
     - libffi   # [build_platform != target_platform]
   host:
     - cairo
-    - gettext  # [osx]
     - glib
     - libffi
     - python
