@@ -13,9 +13,11 @@ source:
   patches:
     - cross-compile.patch
     - test-fix.patch  # [linux]
+    # https://gitlab.gnome.org/GNOME/gobject-introspection/-/merge_requests/265
+    - pkg-config.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [py<35]
 
 requirements:
