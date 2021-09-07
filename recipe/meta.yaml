@@ -73,6 +73,8 @@ outputs:
     requirements:
       build:
         - {{ compiler('c') }}
+        # conda-build needs native python to make .pyc files
+        - python  # [build_platform != target_platform]
       host:
         - glib
         - python
