@@ -81,6 +81,8 @@ outputs:
       run:
         - python
     test:
+      requires:
+        - pkg-config
       commands:
         - g-ir-scanner --help  # [not win]
         - python "%PREFIX%\\Library\\bin\\g-ir-scanner" --help  # [win]
