@@ -2,9 +2,10 @@
 {% set version = "1.68.0" %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
+{% set prefix = 'Library/' if win else '' %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name|lower }}-split
   version: {{ version }}
 
 source:
@@ -17,7 +18,7 @@ source:
     - pkg-config.patch
 
 build:
-  number: 1
+  number: 2
   skip: true  # [py<35]
 
 requirements:
@@ -39,23 +40,105 @@ requirements:
     - glib
     - libffi
     - python
-  run:
-    - libffi
-    - python
 
-test:
-  requires:
-    - pkg-config
-  commands:
-    - g-ir-scanner --help  # [not win]
-    - python "%PREFIX%\\Library\\bin\\g-ir-scanner" --help  # [win]
-    - g-ir-compiler --help
+outputs:
+  - name: libgirepository
+    files:
+      - {{ prefix }}lib/girepository-1.0
+      - {{ prefix }}lib/libgirepository-1.0*  # [not win]
+      - {{ prefix }}bin/girepository-1.0*.dll  # [win]
+      - {{ prefix }}lib/girepository-1.0.lib  # [win]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+      host:
+        - cairo
+        - glib
+        - libffi
+      run:
+        - libffi
+    test:
+      commands:
+        - test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}  # [not win]
+        - if not exist %PREFIX%\Library\bin\girepository-1.0-1.dll exit 1  # [win]
+        - if not exist %PREFIX%\Library\lib\girepository-1.0.lib exit 1  # [win]
 
-    # check that g-ir-scanner can be found through pkg-config (used by downstream builds)
-    - test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`  # [unix]
-    - for /f "usebackq tokens=*" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist "%%a" exit 1  # [win]
-  downstreams:
-    - pygobject
+  - name: g-ir-build-tools
+    files:
+      - {{ prefix }}bin/g-ir-annotation-tool
+      - {{ prefix }}bin/g-ir-scanner
+      - {{ prefix }}lib/gobject-introspection
+      - {{ prefix }}share/gobject-introspection-1.0/*
+      - {{ prefix }}share/man/man1/g-ir-scanner.1
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        # conda-build needs native python to make .pyc files
+        - python  # [build_platform != target_platform]
+      host:
+        - glib
+        - python
+      run:
+        - pkg-config
+        - python
+    test:
+      commands:
+        - g-ir-scanner --help  # [not win]
+        - python "%PREFIX%\\Library\\bin\\g-ir-scanner" --help  # [win]
+
+  - name: g-ir-host-tools
+    files:
+      - {{ prefix }}bin/g-ir-compiler*
+      - {{ prefix }}bin/g-ir-generate*
+      - {{ prefix }}bin/g-ir-inspect*
+      - {{ prefix }}share/man/man1/g-ir-compiler.1
+      - {{ prefix }}share/man/man1/g-ir-generate.1
+    requirements:
+      build:
+        - {{ compiler('c') }}
+      host:
+        - glib
+        - libffi
+        - {{ pin_subpackage('libgirepository', exact=True) }}
+      run:
+        - {{ pin_subpackage('libgirepository', exact=True) }}
+    test:
+      commands:
+        - g-ir-compiler --help
+
+  - name: gobject-introspection
+    files:
+      - {{ prefix }}include/gobject-introspection-1.0
+      - {{ prefix }}lib/pkgconfig/gobject-introspection*.pc
+      - {{ prefix }}libexec/gi-cross-launcher-load.sh  # [not win]
+      - {{ prefix }}libexec/gi-cross-launcher-save.sh  # [not win]
+      - {{ prefix }}share/aclocal/introspection.m4
+      - {{ prefix }}share/gir-1.0
+      - {{ prefix }}share/gobject-introspection-1.0/tests
+    requirements:
+      # include build and host requirements to get proper build string
+      build:
+        - {{ compiler('c') }}
+      host:
+        - cairo
+        - glib
+        - libffi
+        - python
+      run:
+        - {{ pin_subpackage('g-ir-build-tools', exact=True) }}
+        - {{ pin_subpackage('g-ir-host-tools', exact=True) }}
+        - {{ pin_subpackage('libgirepository', exact=True) }}
+        - libffi
+        - python
+    test:
+      requires:
+        - pkg-config
+      commands:
+        # check that g-ir-scanner can be found through pkg-config (used by downstream builds)
+        - test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`  # [unix]
+        - for /f "usebackq tokens=*" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist "%%a" exit 1  # [win]
+      downstreams:
+        - pygobject
 
 about:
   home: https://wiki.gnome.org/action/show/Projects/GObjectIntrospection
@@ -65,8 +148,10 @@ about:
   summary: 'Middleware for binding GObject-based code to other languages.'
 
 extra:
+  feedstock-name: {{ name|lower }}
   recipe-maintainers:
     - pkgw
     - ocefpaf
+    - ryanvolz
     - scopatz
     - tschoonj

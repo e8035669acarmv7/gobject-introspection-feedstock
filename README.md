@@ -193,7 +193,10 @@ Current release info
 
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-g--ir--build--tools-green.svg)](https://anaconda.org/conda-forge/g-ir-build-tools) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/g-ir-build-tools.svg)](https://anaconda.org/conda-forge/g-ir-build-tools) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/g-ir-build-tools.svg)](https://anaconda.org/conda-forge/g-ir-build-tools) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/g-ir-build-tools.svg)](https://anaconda.org/conda-forge/g-ir-build-tools) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-g--ir--host--tools-green.svg)](https://anaconda.org/conda-forge/g-ir-host-tools) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/g-ir-host-tools.svg)](https://anaconda.org/conda-forge/g-ir-host-tools) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/g-ir-host-tools.svg)](https://anaconda.org/conda-forge/g-ir-host-tools) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/g-ir-host-tools.svg)](https://anaconda.org/conda-forge/g-ir-host-tools) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-gobject--introspection-green.svg)](https://anaconda.org/conda-forge/gobject-introspection) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/gobject-introspection.svg)](https://anaconda.org/conda-forge/gobject-introspection) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/gobject-introspection.svg)](https://anaconda.org/conda-forge/gobject-introspection) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/gobject-introspection.svg)](https://anaconda.org/conda-forge/gobject-introspection) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libgirepository-green.svg)](https://anaconda.org/conda-forge/libgirepository) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libgirepository.svg)](https://anaconda.org/conda-forge/libgirepository) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libgirepository.svg)](https://anaconda.org/conda-forge/libgirepository) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libgirepository.svg)](https://anaconda.org/conda-forge/libgirepository) |
 
 Installing gobject-introspection
 ================================
@@ -202,18 +205,19 @@ Installing `gobject-introspection` from the `conda-forge` channel can be achieve
 
 ```
 conda config --add channels conda-forge
+conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `gobject-introspection` can be installed with:
+Once the `conda-forge` channel has been enabled, `g-ir-build-tools, g-ir-host-tools, gobject-introspection, libgirepository` can be installed with:
 
 ```
-conda install gobject-introspection
+conda install g-ir-build-tools g-ir-host-tools gobject-introspection libgirepository
 ```
 
-It is possible to list all of the versions of `gobject-introspection` available on your platform with:
+It is possible to list all of the versions of `g-ir-build-tools` available on your platform with:
 
 ```
-conda search gobject-introspection --channel conda-forge
+conda search g-ir-build-tools --channel conda-forge
 ```
 
 
@@ -282,6 +286,7 @@ Feedstock Maintainers
 
 * [@ocefpaf](https://github.com/ocefpaf/)
 * [@pkgw](https://github.com/pkgw/)
+* [@ryanvolz](https://github.com/ryanvolz/)
 * [@scopatz](https://github.com/scopatz/)
 * [@tschoonj](https://github.com/tschoonj/)
 
