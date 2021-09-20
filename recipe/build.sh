@@ -19,8 +19,8 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
     pushd build-host
 
     export CC=$CC_FOR_BUILD
-    export AR=($CC_FOR_BUILD -print-prog-name=ar)
-    export NM=($CC_FOR_BUILD -print-prog-name=nm)
+    export AR="$($CC_FOR_BUILD -print-prog-name=ar)"
+    export NM="$($CC_FOR_BUILD -print-prog-name=nm)"
     export LDFLAGS=${LDFLAGS//$PREFIX/$BUILD_PREFIX}
     export PKG_CONFIG_PATH=${BUILD_PREFIX}/lib/pkgconfig
 
