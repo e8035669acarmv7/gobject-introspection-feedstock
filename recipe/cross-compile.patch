@@ -28,3 +28,21 @@ index 46b487e..ea82c01 100644
 +  meson.override_find_program('g-ir-generate', girgenerate)
 +  meson.override_find_program('g-ir-inspect', girinspect)
 +endif
+diff --git a/gir/meson.build b/gir/meson.build
+index 5d64633..184d45f 100644
+--- a/gir/meson.build
++++ b/gir/meson.build
+@@ -495,10 +495,11 @@ gir_files += custom_target('gir-girepository',
+ )
+ 
+ typelibs = []
++local_gircompiler = find_program('g-ir-compiler', native: false, required : false)
+ if get_option('gi_cross_binary_wrapper') != ''
+-    gircompiler_command = [get_option('gi_cross_binary_wrapper'), gircompiler.full_path(), ]
++    gircompiler_command = [get_option('gi_cross_binary_wrapper'), local_gircompiler.full_path(), ]
+ else
+-    gircompiler_command = [gircompiler, ]
++    gircompiler_command = [local_gircompiler, ]
+ endif
+ 
+ gircompiler_command += [ '-o', '@OUTPUT@', '@INPUT@',
