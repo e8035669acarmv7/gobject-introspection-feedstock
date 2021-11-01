@@ -27,7 +27,7 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - {{ posix }}bison
     - {{ posix }}flex
-    - meson
+    - meson >=0.55.3
     - ninja
     - {{ posix }}patch
     - {{ native }}pkg-config
