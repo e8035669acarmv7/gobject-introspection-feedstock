@@ -137,8 +137,6 @@ outputs:
         # check that g-ir-scanner can be found through pkg-config (used by downstream builds)
         - test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`  # [unix]
         - for /f "usebackq tokens=*" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist "%%a" exit 1  # [win]
-      downstreams:
-        - pygobject
 
 about:
   home: https://wiki.gnome.org/action/show/Projects/GObjectIntrospection
