@@ -18,7 +18,7 @@ source:
     - pkg-config.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [py<35]
 
 requirements:
@@ -27,7 +27,7 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - {{ posix }}bison
     - {{ posix }}flex
-    - meson
+    - meson >=0.55.3
     - ninja
     - {{ posix }}patch
     - {{ native }}pkg-config
@@ -137,8 +137,6 @@ outputs:
         # check that g-ir-scanner can be found through pkg-config (used by downstream builds)
         - test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`  # [unix]
         - for /f "usebackq tokens=*" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist "%%a" exit 1  # [win]
-      downstreams:
-        - pygobject
 
 about:
   home: https://wiki.gnome.org/action/show/Projects/GObjectIntrospection
