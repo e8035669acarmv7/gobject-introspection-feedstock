@@ -3,6 +3,7 @@
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 {% set prefix = 'Library/' if win else '' %}
+{% set local_glib_pin = '>=2.74' %}
 
 package:
   name: {{ name|lower }}-split
@@ -34,12 +35,12 @@ requirements:
     - {{ posix }}patch
     - {{ native }}pkg-config
     - {{ compiler('c') }}
-    - glib     # [build_platform != target_platform]
-    - cairo    # [build_platform != target_platform]
-    - libffi   # [build_platform != target_platform]
+    - glib {{ local_glib_pin }}  # [build_platform != target_platform]
+    - cairo                      # [build_platform != target_platform]
+    - libffi                     # [build_platform != target_platform]
   host:
     - cairo
-    - glib
+    - glib {{ local_glib_pin }}
     - libffi
     - python
 
@@ -55,7 +56,7 @@ outputs:
         - {{ compiler('c') }}
       host:
         - cairo
-        - glib
+        - glib {{ local_glib_pin }}
         - libffi
       run:
         - libffi
@@ -78,7 +79,7 @@ outputs:
         # conda-build needs native python to make .pyc files
         - python  # [build_platform != target_platform]
       host:
-        - glib
+        - glib {{ local_glib_pin }}
         - python
       run:
         - pkg-config
@@ -99,7 +100,7 @@ outputs:
       build:
         - {{ compiler('c') }}
       host:
-        - glib
+        - glib {{ local_glib_pin }}
         - libffi
         - {{ pin_subpackage('libgirepository', exact=True) }}
       run:
@@ -123,7 +124,7 @@ outputs:
         - {{ compiler('c') }}
       host:
         - cairo
-        - glib
+        - glib {{ local_glib_pin }}
         - libffi
         - python
       run:
