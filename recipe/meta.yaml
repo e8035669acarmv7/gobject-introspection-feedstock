@@ -1,8 +1,9 @@
 {% set name = "gobject-introspection" %}
-{% set version = "1.72.0" %}
+{% set version = "1.74.0" %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 {% set prefix = 'Library/' if win else '' %}
+{% set local_glib_pin = '>=2.74' %}
 
 package:
   name: {{ name|lower }}-split
@@ -10,7 +11,7 @@ package:
 
 source:
   url: https://download.gnome.org/sources/{{ name }}/{{ '.'.join(version.split('.')[:2]) }}/{{ name }}-{{ version }}.tar.xz
-  sha256: 02fe8e590861d88f83060dd39cda5ccaa60b2da1d21d0f95499301b186beaabc
+  sha256: 347b3a719e68ba4c69ff2d57ee2689233ea8c07fc492205e573386779e42d653
   patches:
     - cross-compile.patch
     - test-fix.patch  # [linux]
@@ -20,7 +21,7 @@ source:
     - 0001-Don-t-add-build_root-giscanner-to-PYTHONPATH-for-run.patch
 
 build:
-  number: 1
+  number: 0
   skip: true  # [py<35]
 
 requirements:
@@ -34,11 +35,16 @@ requirements:
     - {{ posix }}patch
     - {{ native }}pkg-config
     - {{ compiler('c') }}
-    - glib     # [build_platform != target_platform]
-    - cairo    # [build_platform != target_platform]
-    - libffi   # [build_platform != target_platform]
+    # This dep is intentionally written twice; the second time allows
+    # conda-build to add a global pin if needed.
+    - glib {{ local_glib_pin }}  # [build_platform != target_platform]
+    - glib                       # [build_platform != target_platform]
+    - cairo                      # [build_platform != target_platform]
+    - libffi                     # [build_platform != target_platform]
   host:
     - cairo
+    # Intentional double-listing for conda-build global pinning:
+    - glib {{ local_glib_pin }}
     - glib
     - libffi
     - python
@@ -55,6 +61,8 @@ outputs:
         - {{ compiler('c') }}
       host:
         - cairo
+        # Intentional double-listing for conda-build global pinning:
+        - glib {{ local_glib_pin }}
         - glib
         - libffi
       run:
@@ -78,6 +86,8 @@ outputs:
         # conda-build needs native python to make .pyc files
         - python  # [build_platform != target_platform]
       host:
+        # Intentional double-listing for conda-build global pinning:
+        - glib {{ local_glib_pin }}
         - glib
         - python
       run:
@@ -99,6 +109,8 @@ outputs:
       build:
         - {{ compiler('c') }}
       host:
+        # Intentional double-listing for conda-build global pinning:
+        - glib {{ local_glib_pin }}
         - glib
         - libffi
         - {{ pin_subpackage('libgirepository', exact=True) }}
@@ -123,6 +135,8 @@ outputs:
         - {{ compiler('c') }}
       host:
         - cairo
+        # Intentional double-listing for conda-build global pinning:
+        - glib {{ local_glib_pin }}
         - glib
         - libffi
         - python
