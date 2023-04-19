@@ -19,6 +19,7 @@ source:
     - pkg-config.patch
     # workaround for conflicting "import ast", should not be necessary once PyPy is updated
     - 0001-Don-t-add-build_root-giscanner-to-PYTHONPATH-for-run.patch
+    - ppc64le-math.patch  # [ppc64le]
 
 build:
   number: 0

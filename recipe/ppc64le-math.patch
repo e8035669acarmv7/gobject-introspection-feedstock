@@ -1,0 +1,20 @@
+This particular test case relies on some low-level binary arithmetic
+that seems to work out differently on the ppc64le architecture. Seeing
+as the g-i results should match what the system's C compiler produces,
+it seems like it's correct for the results here to be platform-dependent. See
+https://github.com/conda-forge/gobject-introspection-feedstock/pull/62
+for some discussion.
+
+diff --git a/tests/scanner/Regress-1.0-expected.gir b/tests/scanner/Regress-1.0-expected.gir
+index 902513d..bb45e55 100644
+--- a/tests/scanner/Regress-1.0-expected.gir
++++ b/tests/scanner/Regress-1.0-expected.gir
+@@ -2626,7 +2626,7 @@ exposed to language bindings.</doc>
+       <type name="gint" c:type="gint"/>
+     </constant>
+     <constant name="GOOD_EXPR_CONSTANT"
+-              value="-2305843009213693952"
++              value="0"
+               c:type="REGRESS_GOOD_EXPR_CONSTANT">
+       <source-position filename="regress.h" line="527"/>
+       <type name="gint" c:type="gint"/>
