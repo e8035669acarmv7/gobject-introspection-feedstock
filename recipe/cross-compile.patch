@@ -29,10 +29,10 @@ index 46b487e..ea82c01 100644
 +  meson.override_find_program('g-ir-inspect', girinspect)
 +endif
 diff --git a/gir/meson.build b/gir/meson.build
-index 5d64633..184d45f 100644
+index 09714cc..0ceb0ae 100644
 --- a/gir/meson.build
 +++ b/gir/meson.build
-@@ -495,10 +495,11 @@ gir_files += custom_target('gir-girepository',
+@@ -510,10 +510,11 @@ gir_files += custom_target('gir-girepository',
  )
  
  typelibs = []
