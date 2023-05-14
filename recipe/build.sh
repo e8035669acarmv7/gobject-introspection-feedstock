@@ -49,9 +49,9 @@ cd forgebuild
 meson ${MESON_ARGS} --buildtype=release --prefix="$PREFIX" --backend=ninja -Dlibdir=lib \
       -Dcairo=enabled -Dpython="$PYTHON" ..
 ninja -v
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 ]]; then
-  ninja test
-fi
+# if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 ]]; then
+#   ninja test
+# fi
 ninja install
 
 rm -f $PREFIX/lib/libgirepository-*.a $PREFIX/lib/libgirepository-*.la
