@@ -6,6 +6,8 @@ cairo:
 - '1'
 cdt_name:
 - cos7
+cdt_arch:
+- armv7l
 channel_sources:
 - conda-forge
 channel_targets:
