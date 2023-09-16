@@ -1,5 +1,5 @@
 {% set name = "gobject-introspection" %}
-{% set version = "1.78.0" %}
+{% set version = "1.78.1" %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 {% set prefix = 'Library/' if win else '' %}
@@ -11,7 +11,7 @@ package:
 
 source:
   url: https://download.gnome.org/sources/{{ name }}/{{ '.'.join(version.split('.')[:2]) }}/{{ name }}-{{ version }}.tar.xz
-  sha256: 84f5bd2038bd52abbce74a639832c5b46a2d17e9c5a8ae14f9788e8516c04166
+  sha256: bd7babd99af7258e76819e45ba4a6bc399608fe762d83fde3cac033c50841bb4
   patches:
     - cross-compile.patch
     - test-fix.patch  # [linux]
@@ -19,7 +19,6 @@ source:
     - pkg-config.patch
     # workaround for conflicting "import ast", should not be necessary once PyPy is updated
     - 0001-Don-t-add-build_root-giscanner-to-PYTHONPATH-for-run.patch
-    - ppc64le-math.patch  # [ppc64le]
 
 build:
   number: 0
