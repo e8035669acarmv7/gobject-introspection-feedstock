@@ -21,7 +21,7 @@ source:
     - 0001-Don-t-add-build_root-giscanner-to-PYTHONPATH-for-run.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [py<35]
 
 requirements:
