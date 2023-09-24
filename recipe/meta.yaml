@@ -47,6 +47,7 @@ requirements:
     - glib
     - libffi
     - python
+    - setuptools
 
 outputs:
   - name: libgirepository
@@ -89,6 +90,7 @@ outputs:
         - glib {{ local_glib_pin }}
         - glib
         - python
+        - setuptools
       run:
         - pkg-config
         - python
@@ -139,6 +141,7 @@ outputs:
         - glib
         - libffi
         - python
+        - setuptools
       run:
         - {{ pin_subpackage('g-ir-build-tools', exact=True) }}
         - {{ pin_subpackage('g-ir-host-tools', exact=True) }}
