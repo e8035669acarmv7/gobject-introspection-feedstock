@@ -47,7 +47,7 @@ requirements:
     - glib
     - libffi
     - python
-    - setuptools
+    - setuptools  # [py>311]
 
 outputs:
   - name: libgirepository
@@ -90,10 +90,12 @@ outputs:
         - glib {{ local_glib_pin }}
         - glib
         - python
-        - setuptools
+        - setuptools  # [py>311]
       run:
         - pkg-config
         - python
+        # run-dep as a workaround for now; upstream package still imports from distutils
+        - setuptools  # [py>311]
     test:
       commands:
         - g-ir-scanner --help  # [not win]
@@ -141,7 +143,7 @@ outputs:
         - glib
         - libffi
         - python
-        - setuptools
+        - setuptools  # [py>311]
       run:
         - {{ pin_subpackage('g-ir-build-tools', exact=True) }}
         - {{ pin_subpackage('g-ir-host-tools', exact=True) }}
