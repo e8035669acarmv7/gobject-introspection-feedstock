@@ -21,8 +21,7 @@ source:
     - 0001-Don-t-add-build_root-giscanner-to-PYTHONPATH-for-run.patch
 
 build:
-  number: 0
-  skip: true  # [py<35]
+  number: 1
 
 requirements:
   build:
@@ -48,6 +47,7 @@ requirements:
     - glib
     - libffi
     - python
+    - setuptools  # [py>311]
 
 outputs:
   - name: libgirepository
@@ -90,9 +90,12 @@ outputs:
         - glib {{ local_glib_pin }}
         - glib
         - python
+        - setuptools  # [py>311]
       run:
         - pkg-config
         - python
+        # run-dep as a workaround for now; upstream package still imports from distutils
+        - setuptools  # [py>311]
     test:
       commands:
         - g-ir-scanner --help  # [not win]
@@ -140,6 +143,7 @@ outputs:
         - glib
         - libffi
         - python
+        - setuptools  # [py>311]
       run:
         - {{ pin_subpackage('g-ir-build-tools', exact=True) }}
         - {{ pin_subpackage('g-ir-host-tools', exact=True) }}
@@ -160,6 +164,7 @@ about:
   license_family: LGPL
   license_file: COPYING
   summary: Middleware for binding GObject-based code to other languages.
+  dev_url: https://gitlab.gnome.org/GNOME/gobject-introspection
 
 extra:
   feedstock-name: {{ name|lower }}
