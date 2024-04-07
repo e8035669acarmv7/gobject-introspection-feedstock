@@ -11,7 +11,7 @@ c_stdlib_version:
 cairo:
 - '1'
 channel_sources:
-- conda-forge
+- conda-forge/label/gettext_dev,conda-forge
 channel_targets:
 - conda-forge main
 glib:
