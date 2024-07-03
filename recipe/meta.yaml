@@ -1,9 +1,9 @@
 {% set name = "gobject-introspection" %}
-{% set version = "1.78.0" %}
+{% set version = "1.80.1" %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 {% set prefix = 'Library/' if win else '' %}
-{% set local_glib_pin = '>=2.78' %}
+{% set local_glib_pin = '>=2.80' %}
 
 package:
   name: {{ name|lower }}-split
@@ -11,19 +11,15 @@ package:
 
 source:
   url: https://download.gnome.org/sources/{{ name }}/{{ '.'.join(version.split('.')[:2]) }}/{{ name }}-{{ version }}.tar.xz
-  sha256: 84f5bd2038bd52abbce74a639832c5b46a2d17e9c5a8ae14f9788e8516c04166
+  sha256: a1df7c424e15bda1ab639c00e9051b9adf5cea1a9e512f8a603b53cd199bc6d8
   patches:
     - cross-compile.patch
     - test-fix.patch  # [linux]
     # https://gitlab.gnome.org/GNOME/gobject-introspection/-/merge_requests/265
     - pkg-config.patch
-    # workaround for conflicting "import ast", should not be necessary once PyPy is updated
-    - 0001-Don-t-add-build_root-giscanner-to-PYTHONPATH-for-run.patch
-    - ppc64le-math.patch  # [ppc64le]
 
 build:
   number: 0
-  skip: true  # [py<35]
 
 requirements:
   build:
@@ -48,7 +44,9 @@ requirements:
     - glib {{ local_glib_pin }}
     - glib
     - libffi
+    - packaging
     - python
+    - setuptools  # [py>311]
 
 outputs:
   - name: libgirepository
@@ -91,9 +89,12 @@ outputs:
         - glib {{ local_glib_pin }}
         - glib
         - python
+        - setuptools  # [py>311]
       run:
         - pkg-config
         - python
+        # run-dep as a workaround for now; upstream package still imports from distutils
+        - setuptools  # [py>311]
     test:
       commands:
         - g-ir-scanner --help  # [not win]
@@ -141,6 +142,7 @@ outputs:
         - glib
         - libffi
         - python
+        - setuptools  # [py>311]
       run:
         - {{ pin_subpackage('g-ir-build-tools', exact=True) }}
         - {{ pin_subpackage('g-ir-host-tools', exact=True) }}
@@ -161,6 +163,7 @@ about:
   license_family: LGPL
   license_file: COPYING
   summary: Middleware for binding GObject-based code to other languages.
+  dev_url: https://gitlab.gnome.org/GNOME/gobject-introspection
 
 extra:
   feedstock-name: {{ name|lower }}
